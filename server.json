@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.syfert/legal-research",
+  "title": "Syfert Legal Research",
+  "description": "Verify legal citations, case treatment, quotes and whole briefs against 10.7M U.S. opinions",
+  "version": "1.1.0",
+  "websiteUrl": "https://syfert.com/mcp/",
+  "icons": [
+    {
+      "src": "https://syfert.com/mcp/icon.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    },
+    {
+      "src": "https://syfert.com/mcp/icon.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["any"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.syfert.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer <token> - free tokens at https://syfert.com/mcp/",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
