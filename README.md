@@ -4,10 +4,26 @@
 still good law, audit a whole brief in one pass — and search statutes for every state.
 
 - **Endpoint:** `https://mcp.syfert.com/mcp` (Streamable HTTP)
-- **Auth:** `Authorization: Bearer <token>`
+- **Auth:** `Authorization: Bearer <token>` — *optional*, see below
 - **Free token:** one email click at <https://syfert.com/mcp/> — no card, no trial clock
 - **Docs:** <https://syfert.com/mcp/> · **Tool detail:** <https://syfert.com/mcp/tools.php>
 - **Maintainer:** Graham W. Syfert, Esq., P.A. — <graham@syfert.com>
+
+## No token? Just connect.
+
+Point any MCP client at `https://mcp.syfert.com/mcp` with no credential at all and it answers.
+All 13 tools are read-only, so anonymous access is the whole product, not a demo of it —
+it is simply metered per IP address: **20 calls per minute and 200 calls per day**.
+`initialize` and `tools/list` are never counted, so discovery always works.
+
+A free token — one email click at <https://syfert.com/mcp/> — lifts those limits to 120 calls
+per minute, restores the full result caps and the 512 KB `check_brief` document, and attaches
+your calls to your own account. Send it as `Authorization: Bearer YOUR_TOKEN`.
+
+```bash
+curl -s https://mcp.syfert.com/mcp -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
 
 ## What is behind it
 
@@ -41,8 +57,10 @@ All 13 tools are **read-only**. Nothing writes, nothing bills, nothing leaves th
 
 ## Install
 
-Get a token first: <https://syfert.com/mcp/> → enter your email → open the one-time link.
-Everywhere below, replace `YOUR_TOKEN` with it. **Treat it like a password.**
+Every snippet below sends a token. You do not have to — drop the `Authorization` header (or
+use the plain endpoint URL) and the same client connects anonymously at 20 calls/min, 200/day.
+To lift that: <https://syfert.com/mcp/> → enter your email → open the one-time link, then
+replace `YOUR_TOKEN` everywhere below with what it gives you. **Treat it like a password.**
 
 ### Claude Code
 
