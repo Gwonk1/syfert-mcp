@@ -1,0 +1,31 @@
+name: Bug report
+description: Something in the Syfert MCP server or these manifests is wrong
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where is the problem
+      options:
+        - A tool returned a wrong or missing result
+        - Connection / authentication
+        - An install snippet in this repo does not work
+        - Documentation
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: MCP client and version
+      placeholder: "Claude Code 2.x / Cursor / Gemini CLI 0.30 / ..."
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Tool name, the arguments you used, and what came back. Do NOT paste your token.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead

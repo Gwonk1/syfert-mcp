@@ -1,0 +1,22 @@
+{
+  "name": "syfert-mcp",
+  "version": "1.0.0",
+  "description": "The verification layer for legal AI output: verify every citation, check whether a case is still good law, audit a whole brief in one pass, and search statutes for every state. 10.7M U.S. opinions, Syfertize treatment flags, statutes for all 50 states + D.C. and federal.",
+  "mcpServers": {
+    "syfert": {
+      "httpUrl": "https://mcp.syfert.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${SYFERT_MCP_TOKEN}"
+      },
+      "timeout": 120000
+    }
+  },
+  "settings": [
+    {
+      "name": "Syfert MCP Token",
+      "description": "Your Syfert MCP token. Get one free at https://syfert.com/mcp/ (one email click, no card).",
+      "envVar": "SYFERT_MCP_TOKEN",
+      "sensitive": true
+    }
+  ]
+}

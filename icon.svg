@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512" role="img" aria-label="Syfert legal research">
+  <rect width="100" height="100" rx="21" ry="21" fill="#1d2735"/>
+  <g fill="none" stroke="#e0a526" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 67,29 C 67,21 33,21 33,30 C 33,39 67,43 67,52 C 67,61 33,61 33,53"/>
+    <path d="M 33,71 C 33,79 67,79 67,70 C 67,61 33,57 33,48 C 33,39 67,39 67,47"/>
+  </g>
+</svg>

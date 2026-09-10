@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Get a free token
+    url: https://syfert.com/mcp/
+    about: One email click. No card.
+  - name: Email support
+    url: mailto:graham@syfert.com
+    about: Graham reads this himself.
