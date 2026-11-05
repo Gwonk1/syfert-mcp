@@ -12,13 +12,13 @@ still good law, audit a whole brief in one pass — and search statutes for ever
 ## No token? Just connect.
 
 Point any MCP client at `https://mcp.syfert.com/mcp` with no credential at all and it answers.
-All 13 tools are read-only, so anonymous access is the whole product, not a demo of it —
-it is simply metered per IP address: **20 calls per minute and 200 calls per day**.
+Every tool except the long-brief upload works anonymously; it is simply metered per IP
+address: **20 calls per day** (and at most 20 a minute).
 `initialize` and `tools/list` are never counted, so discovery always works.
 
 A free token — one email click at <https://syfert.com/mcp/> — lifts those limits to 120 calls
-per minute, restores the full result caps and the 512 KB `check_brief` document, and attaches
-your calls to your own account. Send it as `Authorization: Bearer YOUR_TOKEN`.
+per minute, restores the full result caps and the 512 KB `check_brief` document, unlocks
+`brief_upload` for briefs of any length, and attaches your calls to your own account. Send it as `Authorization: Bearer YOUR_TOKEN`.
 
 ```bash
 curl -s https://mcp.syfert.com/mcp -H 'Content-Type: application/json' \
@@ -35,7 +35,10 @@ curl -s https://mcp.syfert.com/mcp -H 'Content-Type: application/json' \
 | Statutes | All **50 states + D.C.**, plus the U.S. Code, the C.F.R., the federal rules and the sentencing guidelines — 55 corpora, each with its own index and scrape date |
 | Quotes | 448,000 passages that courts quote from each other, each tied to its source opinion |
 
-All 13 tools are **read-only**. Nothing writes, nothing bills, nothing leaves the corpus.
+22 tools. 19 are **read-only**; the other three write only what you send them:
+`suggest_treatment` (a flag correction your AI proposes, kept for human review) and
+`brief_upload` / `brief_delete` (your own brief, held in server RAM while it is checked).
+Nothing bills, nothing leaves the corpus.
 
 ## Tools
 
@@ -44,7 +47,14 @@ All 13 tools are **read-only**. Nothing writes, nothing bills, nothing leaves th
 | `search_cases` | Full-text search across 10.7M opinions — boolean, phrases, proximity, court/date/state filters, authority-weighted ranking. |
 | `get_case` | Full opinion text (majority, concurrence, dissent) with metadata, parallel citations, the Bluebook cite and the treatment flag. Long opinions page. |
 | `check_citation` | The hallucination catcher: does the cite exist, what case really lives there, does the claimed case name match. Misses get did-you-mean suggestions. |
-| `check_brief` | Whole-document audit — every citation, every claimed case name and every quoted passage in a finished draft, verified in one pass. |
+| `check_brief` | Whole-document audit — every citation, every claimed case name and every quoted passage in a finished draft, verified in one pass. Up to 200 citations inline; any longer brief goes through `brief_upload`. |
+| `brief_upload` | Signed-in accounts: upload a brief of any length in pieces; `check_brief(brief_id)` then checks every citation in it. |
+| `get_brief_results` | Read a long brief's results one page at a time (corrections, cites, unattached quotes, statutes). |
+| `brief_delete` | Delete an uploaded brief and its results now (otherwise they go after the last page is read, or after an hour unused). |
+| `find_case` | Fast direct lookup: a citation or a caption in, THE case out — or up to five candidates when it is not decisive. |
+| `verify_quote` | One quotation checked word for word against the opinion it is attributed to, with the closest passage when it is off. |
+| `find_authority` | Paste a proposition verbatim; get the cases courts cite for it. |
+| `context_detector` | Does the case say what the brief says it says? The opinion's own words around the pinned page, beside the brief's sentence. |
 | `get_treatment` | Is it still good law? Red/yellow/green with the citing cases behind each signal, who overruled it (including statutory supersession), and still-good replacement authority. |
 | `get_propositions` | What courts actually cite the case *for*, proposition by proposition, each with its own flag — plus a quote-integrity verdict per famous passage. |
 | `get_citing_cases` | The citator list: ranked citing cases with judge-written parentheticals, verbatim quotes, pin cites and each citing court's own signal. |
@@ -54,11 +64,13 @@ All 13 tools are **read-only**. Nothing writes, nothing bills, nothing leaves th
 | `find_court` | Turns "the Eleventh Circuit" or "S.D. Florida" into the court identifier the search filters expect. |
 | `search_statutes` | Search statutes and codes for all 50 states + D.C., the U.S. Code, the C.F.R., the federal rules and the sentencing guidelines. |
 | `get_statute` | Full section text with cross-references surfaced and Notes-of-Decisions annotations; federal sections carry a banner when they have been held unconstitutional. |
+| `export_document` | Optional: a readable copy of a case or statute (Markdown or HTML, with a filename) to save locally; long documents come in parts. |
+| `suggest_treatment` | Tell us a red/yellow/green flag is wrong; the suggestion is reviewed by a human and never changes a flag by itself. |
 
 ## Install
 
 Every snippet below sends a token. You do not have to — drop the `Authorization` header (or
-use the plain endpoint URL) and the same client connects anonymously at 20 calls/min, 200/day.
+use the plain endpoint URL) and the same client connects anonymously at 20 calls a day.
 To lift that: <https://syfert.com/mcp/> → enter your email → open the one-time link, then
 replace `YOUR_TOKEN` everywhere below with what it gives you. **Treat it like a password.**
 
@@ -208,6 +220,12 @@ query, not a brief you pasted in. What is kept is operational only: which tool r
 succeeded, and how long it took — enough to keep the lights on and catch abuse. That data is
 seen by Graham W. Syfert, Esq., P.A. and nobody else. It is not sold, not shared with third
 parties, and not fed to any advertising system.
+
+One exception, for long briefs: a brief you upload with `brief_upload` is held, with its check
+results, in server memory only (never on disk, in backups or in logs), readable only with your
+credential, and deleted as soon as the last page of results is read, or after an hour unused.
+And if your AI calls `suggest_treatment`, the case, the flag it proposes, its reason and the
+authority it names are kept for human review — nothing about you goes with it.
 
 Your token is a secret; anyone holding it can search against your access. If it leaks, email
 <graham@syfert.com> and a fresh one will be issued and the old one retired.

@@ -46,10 +46,12 @@ If the client cannot set request headers, use the legacy path form instead and s
 
 ## Step 3 — verify
 
-List tools. A working install reports **13 tools**: `search_cases`, `get_case`,
-`check_citation`, `check_brief`, `get_treatment`, `get_propositions`, `get_citing_cases`,
-`find_related_cases`, `search_quotes`, `find_issues`, `find_court`, `search_statutes`,
-`get_statute`. All are read-only.
+List tools. A working install reports **22 tools**: `search_cases`, `find_case`, `get_case`,
+`check_citation`, `verify_quote`, `get_treatment`, `check_brief`, `get_propositions`,
+`get_citing_cases`, `find_related_cases`, `find_court`, `search_quotes`, `find_authority`,
+`find_issues`, `search_statutes`, `get_statute`, `suggest_treatment`, `export_document`,
+`context_detector`, `brief_upload`, `get_brief_results`, `brief_delete`. All are read-only
+except `suggest_treatment`, `brief_upload` and `brief_delete`.
 
 Then call `check_citation` with `citation: "410 U.S. 113"` and
 `expected_case_name: "Roe v. Wade"`. It should come back as a match.
